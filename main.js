@@ -1,4 +1,35 @@
-const form_ref = document.getElementsByTagName(`form`)[0]; 
+
+const myLibrary = [];
+
+
+const amountOfcells = 4;
+
+
+const createTableRow = (actualBook,amountOfcells) =>
+{
+    let row = document.createElement(`tr`);
+
+    for (let j = 0; j < amountOfcells; j++)
+    {
+        let cell = document.createElement(`td`);
+
+        let cellText = document.createTextNode(Object.values(myLibrary[actualBook])[j]);
+
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+    }
+
+    tblbody.appendChild(row);
+}
+
+
+addBookToLibrary(`Harry el sucio Potter`, `La racista homofobica J.K.Rowling`, 650, false);
+addBookToLibrary(`The final empire`, `Brandy Sandy`, 700, true);
+addBookToLibrary(`The ascension well`, `Brandy Sandy`,750, true);
+addBookToLibrary(`The hero of ages`,`Brandy Sandy`,800, true);
+
+
+const form_ref = document.getElementsByTagName(`form`)[0];
 
 const dialogoRef = document.getElementsByTagName(`dialog`)[0];
 
@@ -32,11 +63,13 @@ function Save()
 
     addBookToLibrary(title,author,pages,read);
 
-    console.log (myLibrary);
-
     generarTabla();
 
 }
+
+
+
+
 
 saveButton.addEventListener(`click`, (e) =>
 {
@@ -44,8 +77,6 @@ saveButton.addEventListener(`click`, (e) =>
     Save();
     closeDialog();
 });
-
-const myLibrary = [];
 
 function Book (title, author, pages, read)
 {
@@ -82,50 +113,24 @@ function addBookToLibrary(title, author, pages, read)
 {
     myLibrary.push (new Book (title,author,pages, read));
 
+   createTableRow(myLibrary.at(-1),amountOfcells);
+
 }
 
 
-addBookToLibrary(`Harry el sucio Potter`, `La racista homofobica J.K.Rowling`, 650, false);
-addBookToLibrary(`The final empire`, `Brandy Sandy`, 700, true);
-addBookToLibrary(`The ascension well`, `Brandy Sandy`,750, true);
-addBookToLibrary(`The hero of ages`,`Brandy Sandy`,800, true);
+let body = document.getElementsByTagName("body")[0];
 
+let tabla = document.getElementsByTagName("table")[0];
 
-function displayAllTheBooks ()
-{
-    for (book of myLibrary)
-    {
-        console.table(book);
-    }
-}
+let tblbody = document.createElement("tbody");
+
 
 function generarTabla()
 {
-    let body = document.getElementsByTagName("body")[0];
-
-    let tabla = document.createElement("table");
-
-    let tblbody = document.createElement("tbody");
-
-    // Creamos tantas hileras como la longitud del array myLibrary
 
     for (let i = 0; i < myLibrary.length; i++)
     {
-        let hilera = document.createElement("tr");
-
-        // Aqui vamos a crear 4 celdas, luego a cada celda le asignamos el valor de la propiedad actual del item de myLibrary actual
-
-        for (let j = 0; j < 4; j++ )
-        {
-            let celda = document.createElement("td");
-
-            let textoCelda = document.createTextNode(Object.values(myLibrary[i])[j]);
-    
-            celda.appendChild(textoCelda);
-            hilera.appendChild(celda);
-        }
-
-        tblbody.appendChild(hilera);
+        createTableRow(i,amountOfcells);
     }
 
     tabla.appendChild(tblbody);
